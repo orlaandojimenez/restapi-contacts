@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -17,10 +18,12 @@ app.set('port',process.env.PORT || 3000);
 
 //middlewares
 app.use(morgan('dev'));
+app.use(express.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 //routes
 app.use('/',indexRoutes);
-app.use(express.urlencoded({extended: false}));
 
 //starting the server
 app.listen(app.get('port'), () => {
