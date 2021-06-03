@@ -1,24 +1,26 @@
 const express = require('express');
 const { newContact, getContacts, getContact, deleteContact } = require('../controllers/Contacts');
 const { getUsers, getUser, updateUser, deleteUser, me, updateMe } = require('../controllers/Users');
-const { SingUp } = require('../controllers/Auth');
+const { SingUp, SingIn } = require('../controllers/Auth');
+const {verifyToken} = require('../middlewares/isAuthenticated');
+const {checkDuplicateUsernameOrEmail} = require('../middlewares/verifySingUp');
 
 const router = express.Router();
 
 //Contacts
-router.get('/contacts', getContacts);
-router.get('/contacts/:id', getContact);
-router.post('/contacts', newContact);
-router.delete('/contacts/:id', deleteContact);
+router.get('/contacts', verifyToken, getContacts);
+router.get('/contacts/:id', verifyToken, getContact);
+router.post('/contacts', verifyToken, newContact);
+router.delete('/contacts/:id', verifyToken, deleteContact);
 
 //Users
-router.get("/users", getUsers);
-router.get("/users/:id", getUser);
-router.patch("/users/:id", updateUser);
-router.delete("/users/:id", deleteUser);
+router.get("/users", verifyToken, getUsers);
+router.get("/users/:id", verifyToken, getUser);
+router.patch("/users/:id", verifyToken, updateUser);
+router.delete("/users/:id", verifyToken, deleteUser);
 
 //Auth
-router.post("/auth/signup", SingUp);
-router.post("/auth/signin");
+router.post("/auth/signup",checkDuplicateUsernameOrEmail, SingUp);
+router.post("/auth/signin", SingIn);
 
 module.exports = router;

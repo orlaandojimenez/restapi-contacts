@@ -8,7 +8,6 @@ const createUser = async (data) => {
         email,
         password: await User.encryptPassword(password)
     });
-    console.log(newUser);
 	return User.create(newUser);
 };
 
@@ -20,8 +19,13 @@ const getUserById = (id) => {
 	return User.findOne({_id:id}).select("-password");
 };
 
+const getUserByUsername = (username) => {
+	return User.findOne({username:username}).select("-password");
+};
+
 const getAllUsers = () => {
-	return User.find().select("-password");
+	return User.find();
+	// .select("-password");
 };
 
 const updateUserById = (id,data) =>{
@@ -38,5 +42,6 @@ module.exports = {
 	getUserById,
 	getAllUsers,
 	updateUserById,
-	deleteUserById
+	deleteUserById,
+	getUserByUsername
 };
