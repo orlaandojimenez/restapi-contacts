@@ -18,12 +18,11 @@ app.set('port',process.env.PORT || 3000);
 
 //middlewares
 app.use(morgan('dev'));
+app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 //routes
-app.use('/',indexRoutes);
+app.use('/api',indexRoutes);
 
 //starting the server
 app.listen(app.get('port'), () => {
