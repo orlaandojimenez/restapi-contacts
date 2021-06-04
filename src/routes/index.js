@@ -7,6 +7,7 @@ const {checkDuplicateUsernameOrEmail} = require('../middlewares/verifySingUp');
 
 const router = express.Router();
 
+
 //Contacts
 router.get('/contacts', verifyToken, getContacts);
 router.get('/contacts/:id', verifyToken, getContact);
@@ -20,7 +21,12 @@ router.patch("/users/:id", verifyToken, updateUser);
 router.delete("/users/:id", verifyToken, deleteUser);
 
 //Auth
-router.post("/auth/signup",checkDuplicateUsernameOrEmail, SingUp);
-router.post("/auth/signin", SingIn);
+router.post("/auth/singup",checkDuplicateUsernameOrEmail, SingUp);
+router.post("/auth/singin", SingIn);
+
+//The 404 Route 
+router.get('*', function(req, res){
+    res.status(404).send('Not found');
+  });
 
 module.exports = router;
